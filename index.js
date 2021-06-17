@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
+const func = require("./JS/func.js");
 const Sequelize = require('sequelize');
 const client = new Discord.Client();
 require("dotenv").config();
 
-// Notre préfixe de commande
 const PREFIX = 'm';
 
 const sequelize = new Sequelize('database', 'user', 'password', {
@@ -44,73 +44,88 @@ client.on("message", async message => {
         const command = input.shift();
         const commandArgs = input.join(' ');
 
-        if (command === 'addtag') {
+        if (command === 'create' && message.member.hasPermission('MANAGE_MESSAGES')) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagCollateral = splitArgs.join(' ');
-
             try {
-                // equivalent to: INSERT INTO Transporters (name, description, username) values (?, ?, ?);
                 const transporter = await Transporters.create({
                     name: tagName,
                     collateral: tagCollateral,
                 });
-                return message.reply(`Transporter ${transporter.name} added.`);
+                return message.reply(func.functionSuccess());
             }
             catch (e) {
                 if (e.name === 'SequelizeUniqueConstraintError') {
                     return message.reply('That Transporters already exists.');
                 }
-                return message.reply('Something went wrong with adding a Transporters.');
+                return message.reply(func.functionError());
             }
-        } else if (command === 'tag') {
+        }
+        else if (command === 'getCollateral') {
             const tagName = commandArgs;
-
-            // equivalent to: SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
             const tag = await Transporters.findOne({ where: { name: tagName } });
             if (tag) {
-                // equivalent to: UPDATE tags SET usage_count = usage_count + 1 WHERE name = 'tagName';
                 return message.channel.send(tag.get('collateral'));
             }
-            return message.reply(`Could not find tag: ${tagName}`);
-        } else if (command === 'edittag') {
+            return message.reply(func.functionError());
+        }
+        else if (command === 'collateral' && message.member.hasPermission('MANAGE_MESSAGES')) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagCollateral = splitArgs.join(' ');
-
-            // equivalent to: UPDATE tags (description) values (?) WHERE name='?';
             const affectedRows = await Transporters.update({ collateral: tagCollateral }, { where: { name: tagName } });
             if (affectedRows > 0) {
-                return message.reply(`Tag ${tagName} was edited.`);
+                return message.reply(func.functionSuccess());
             }
-            return message.reply(`Could not find a tag with name ${tagName}.`);
-        } else if (command === 'taginfo') {
+            return message.reply(func.functionError());
+        }
+        else if (command === 'show') {
             const tagName = commandArgs;
-
-            // equivalent to: SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
             const tag = await Transporters.findOne({ where: { name: tagName } });
-            if (tag) {
-                return message.channel.send(`${tagName} as given the collateral : ${tag.collateral}. \nHas made ${tag.missions} missions from wich ${tag.totalmissions} need to be payed.`);
-            }
-            return message.reply(`Could not find tag: ${tagName}`);
-        } else if (command === 'showtags') {
-            // equivalent to: SELECT * FROM tags;
-            const tagList = await Transporters.findAll({});
-            const tagString = tagList.map(t => {
-                var tr = t.name.concat(' | ',t.collateral, ' | ', t.missions, ' | ', t.totalmissions);
-                return tr;
-            }).join('\n') || 'No tags set.';
-            return message.channel.send(`List of transporters: \n${tagString}`);
-        } else if (command === 'removetag') {
+            return message.channel.send(func.showOne(tag));
+        }
+        else if (command === 'showall') {
+            const tagList = await Transporters.findAll({order:[
+                    ['totalmissions','DESC']
+                ]});
+            return message.channel.send(func.showAll(tagList));
+        }
+        else if (command === 'remove' && message.member.hasPermission('MANAGE_MESSAGES')) {
             const tagName = commandArgs;
-            // equivalent to: DELETE from tags WHERE name = ?;
             const rowCount = await Transporters.destroy({ where: { name: tagName } });
-            if (!rowCount) return message.reply('That Transporter did not exist.');
+            if (!rowCount) return message.reply('This transporter did not exist.');
+            return message.reply(func.functionSuccess());
+        }
+        else if (command === 'mission' && message.member.hasPermission('MANAGE_MESSAGES')) {
+            const splitArgs = commandArgs.split(' ');
+            const tagName = splitArgs.shift();
+            const tagMissions = splitArgs.join(' ');
+            const tag = await Transporters.findOne({ where: { name: tagName } });
+            const affectedRows = await Transporters.update({ missions: tag.missions + Number(tagMissions), totalmissions: tag.totalmissions + Number(tagMissions) }, { where: { name: tagName } });
+            if (affectedRows > 0) {
+                return message.reply(func.functionSuccess());
+            }
+            return message.reply(func.functionError());
+        }
+        else if (command === 'pay' && message.member.hasPermission('MANAGE_MESSAGES')) {
+            const splitArgs = commandArgs.split(' ');
+            const tagName = splitArgs.shift();
+            const tag = await Transporters.findOne({ where: { name: tagName } });
+            const affectedRows = await Transporters.update({ missions: 0 }, { where: { name: tagName } });
+            if (affectedRows > 0) {
+                return message.reply(func.pay(tag));
+            }
+            return message.reply(func.functionError());
+        }
+        else if (command === 'price') {
+            const splitArgs = commandArgs.split(' ');
 
-            return message.reply('Transporter deleted.');
+            if (splitArgs.length >= 2) {
+                return message.reply(func.price(splitArgs));
+            }
+            return message.reply(func.functionError());
         }
     }
-
 });
-
 client.login(process.env.BOT_TOKEN);
