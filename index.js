@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const func = require("./JS/func.js");
+const cron = require('cron');
 const Sequelize = require('sequelize');
 const client = new Discord.Client();
 require("dotenv").config();
 
-const PREFIX = 'm';
+const PREFIX = '$';
 
 const sequelize = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
@@ -34,6 +35,15 @@ const Transporters = sequelize.define('transporters', {
 
 client.on("ready", () => {
     Transporters.sync();
+    let scheduledMessage = new cron.CronJob('00 00 19 * * *', () => {
+        // This runs every day at 10:30:00, you can do anything you want
+        // Specifing your guild (server) and your channel
+        client.channels.cache.get(`855066418152079430`).send({ files: ["./database.sqlite"] });
+
+    });
+
+    // When you want to start it, use:
+    scheduledMessage.start()
     console.log("I'm ready !");
 });
 
@@ -44,7 +54,7 @@ client.on("message", async message => {
         const command = input.shift();
         const commandArgs = input.join(' ');
 
-        if (command === 'create' && message.member.hasPermission('MANAGE_MESSAGES')) {
+        if (command === 'create' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagCollateral = splitArgs.join(' ');
@@ -70,7 +80,7 @@ client.on("message", async message => {
             }
             return message.reply(func.functionError());
         }
-        else if (command === 'collateral' && message.member.hasPermission('MANAGE_MESSAGES')) {
+        else if (command === 'collateral' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagCollateral = splitArgs.join(' ');
@@ -91,13 +101,13 @@ client.on("message", async message => {
                 ]});
             return message.channel.send(func.showAll(tagList));
         }
-        else if (command === 'remove' && message.member.hasPermission('MANAGE_MESSAGES')) {
+        else if (command === 'remove' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             const tagName = commandArgs;
             const rowCount = await Transporters.destroy({ where: { name: tagName } });
             if (!rowCount) return message.reply('This transporter did not exist.');
             return message.reply(func.functionSuccess());
         }
-        else if (command === 'mission' && message.member.hasPermission('MANAGE_MESSAGES')) {
+        else if (command === 'mission' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagMissions = splitArgs.join(' ');
@@ -108,7 +118,7 @@ client.on("message", async message => {
             }
             return message.reply(func.functionError());
         }
-        else if (command === 'pay' && message.member.hasPermission('MANAGE_MESSAGES')) {
+        else if (command === 'pay' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tag = await Transporters.findOne({ where: { name: tagName } });
@@ -125,6 +135,10 @@ client.on("message", async message => {
                 return message.reply(func.price(splitArgs));
             }
             return message.reply(func.functionError());
+        }
+        else if (command === 'backup' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
+
+            return message.reply({ files: ["./database.sqlite"] });
         }
     }
 });

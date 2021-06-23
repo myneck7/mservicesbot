@@ -50,7 +50,7 @@ function showAll(tagList) {
 function pay(tag){
     let payed = tag.missions*600000;
     let msg;
-    msg = (`**${tag.name}** as been payed for **${tag.missions}** missions, that makes it **${payed} silvers**`);
+    msg = (`**${tag.name}** as been payed for **${tag.missions}** missions, that makes it **${numberPresentation(payed)} silvers**`);
     const embed = new MessageEmbed()
         .setTitle(generalTitle)
         .setColor(color)
@@ -76,15 +76,18 @@ function price(splitArgs){
     }
 
     const embed = new MessageEmbed()
-        .setTitle(generalTitle)
+        .setTitle('Cost of your convoy :')
         .setColor(color)
-        .setDescription('The price of the convoy is **'+ res+'** silver')
-        .addField('Estimated value :', tagV, true)
-        .addField('Number of slots :', tagS, true)
-        .addField('Weight :', tagQ, true)
+        .setDescription('The usual price for this convoy is **'+ numberPresentation(res)+'** silvers')
+        .addField('Estimated value :', numberPresentation(tagV) + ' silvers', true)
+        .addField('Number of slots :', numberPresentation(tagS) + ' slots', true)
+        .addField('Weight :', numberPresentation(tagQ) + ' KG', true)
         .setImage(image);
 
     return embed;
+}
+function numberPresentation(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
 }
 
 module.exports = { showOne, functionSuccess, functionError, showAll, pay, price };
