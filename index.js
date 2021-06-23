@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const func = require("./JS/func.js");
-const cron = require('cron');
+//const cron = require('cron');
 const Sequelize = require('sequelize');
 const client = new Discord.Client();
 require("dotenv").config();
