@@ -35,7 +35,7 @@ const Transporters = sequelize.define('transporters', {
 
 client.on("ready", () => {
     Transporters.sync();
-    let scheduledMessage = new cron.CronJob('00 00 19 * * *', () => {
+    /*let scheduledMessage = new cron.CronJob('00 00 19 * * *', () => {
         // This runs every day at 10:30:00, you can do anything you want
         // Specifing your guild (server) and your channel
         client.channels.cache.get(`855066418152079430`).send({ files: ["./database.sqlite"] });
@@ -43,7 +43,7 @@ client.on("ready", () => {
     });
 
     // When you want to start it, use:
-    scheduledMessage.start()
+    scheduledMessage.start()*/
     console.log("I'm ready !");
 });
 
