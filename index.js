@@ -140,6 +140,27 @@ client.on("message", async message => {
 
             return message.reply({ files: ["./database.sqlite"] });
         }
+        else if (command === 'commandsa' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
+            return message.reply(
+                '\ncreate [name of the transporter] [state of collateral (yes/no)]\n' +
+                'collateral [name of the transporter] [new state of the collateral (yes/no)]\n' +
+                'remove [name of the transporter]\n' +
+                'mission [name of the transporter] [number of missions to add]\n' +
+                'pay [name of the transporter]\n' +
+                'backup'
+            );
+        }
+        else if (command === 'commands') {
+            return message.reply(
+                '\ngetcollateral [name of the transporter]\n' +
+                'show [name of the transporter]\n' +
+                'showall\n' +
+                'price [weight] [estimated value]'
+            );
+        }
+        else{
+            return message.reply(func.functionError());
+        }
     }
 });
 client.login(process.env.BOT_TOKEN);

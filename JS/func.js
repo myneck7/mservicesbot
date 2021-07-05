@@ -34,16 +34,29 @@ function functionError(){
     return embed;
 }
 function showAll(tagList) {
-    let tx = '   Name   |  Missions  | Total of missions\n';
-    const tagString = tagList.map(t => {
-        let tr = t.name.concat(' | ', t.missions, ' | ', t.totalmissions);
-        return tr;
+    let tnName = 'Name';
+    let tmName = 'Missions';
+    let tmtName = 'Total missions';
+    const tagName = tagList.map(t => {
+        let tn = t.name;
+        return tn;
+    }).join('\n') || 'No tags set.';
+    const tagMissions = tagList.map(t => {
+        let tm = t.missions;
+        return tm;
+    }).join('\n') || 'No tags set.';
+    const tagMissionsT = tagList.map(t => {
+        let tmt = t.totalmissions;
+        return tmt;
     }).join('\n') || 'No tags set.';
     const embed = new MessageEmbed()
         .setTitle(generalTitle)
         .setColor(color)
         .setDescription('List of all the transporters')
-        .addField(tx,tagString)
+        .addFields(
+            { name: tnName, value: tagName, inline: true },
+            { name: tmName, value: tagMissions, inline: true },
+            { name: tmtName, value: tagMissionsT, inline: true })
         .setImage(image);
     return embed;
 }
@@ -61,33 +74,34 @@ function pay(tag){
 }
 function price(splitArgs){
     const tagQ = Number(splitArgs.shift());
-    const tagS = Number(splitArgs[0]);
-    const tagV = Number(splitArgs[1]);
+    const tagV = Number(splitArgs[0]);
     let res;
 
-    if(tagQ/2000*750000 >= tagS/48*750000){
+    if(tagQ/2000*750000 >= tagV/100*6){
         res = tagQ/2000*750000;
     }
     else{
-        res = tagS/48*750000;
-    }
-    if(tagV/100*6 > res){
         res = tagV/100*6;
     }
 
     const embed = new MessageEmbed()
         .setTitle('Cost of your convoy :')
         .setColor(color)
-        .setDescription('The usual price for this convoy is **'+ numberPresentation(res)+'** silvers')
+        .setDescription('Congrats !\n' +
+            'The infos you entered showed that you qualify for our Services.\n' +
+            'We will accept to carry safely your convoy for **'+ numberPresentation(res)+'** silvers\n' +
+            '\n' +
+            'Quick reminder : we insure 100% of your Goods :wink: \n' +
+            'The price have been calculated according an average of the :mammoth: +200 missions we did for :busts_in_silhouette:  +70 clients that trust us.\n'
+            )
         .addField('Estimated value :', numberPresentation(tagV) + ' silvers', true)
-        .addField('Number of slots :', numberPresentation(tagS) + ' slots', true)
-        .addField('Weight :', numberPresentation(tagQ) + ' KG', true)
+        .addField('Weight :', numberPresentation(tagQ) + 'kg', true)
         .setImage(image);
 
     return embed;
 }
 function numberPresentation(x) {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
 }
 
 module.exports = { showOne, functionSuccess, functionError, showAll, pay, price };
