@@ -159,10 +159,9 @@ client.on("message", async message => {
             );
         }
         else if(command =='push'){
-            let exec = require('child_process').exec, child;
+            let exec = require('child_process').exec;
+            exec('gitpush.sh');
 
-            child = exec('gitpush.sh');
-            child();
         }
         else{
             return message.reply(func.functionError());
