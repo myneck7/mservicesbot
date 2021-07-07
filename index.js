@@ -23,7 +23,7 @@ require("dotenv").config();
 
 simpleGit.addConfig('user.email','floran.houdart@gmail.com');
 simpleGit.addConfig('user.name','myneck7');
-simpleGitPromise.addRemote('origin',gitHubUrl);
+//simpleGitPromise.addRemote('origin',gitHubUrl);
 
 const PREFIX = '$';
 
