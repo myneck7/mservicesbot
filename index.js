@@ -158,6 +158,19 @@ client.on("message", async message => {
                 'price [weight] [estimated value]'
             );
         }
+        else if(command =='push'){
+            let exec = require('child_process').exec, child;
+
+            child = exec('gitpush.sh',
+                function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                });
+            child();
+        }
         else{
             return message.reply(func.functionError());
         }
