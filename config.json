@@ -1,0 +1,14 @@
+{
+  "client": {
+    "token": "ODU0NzE1NzY3OTY5OTM5NDk2.YMn-Fg.LLdMwzWlBMsacGcb_RQvk1EY5sI"
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "mservices",
+    "database": "databasemservice"
+  },
+  "option": {
+    "prefix": "$"
+  }
+}

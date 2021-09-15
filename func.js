@@ -92,7 +92,7 @@ function price(splitArgs){
             'We will accept to carry safely your convoy for **'+ numberPresentation(res)+'** silvers\n' +
             '\n' +
             'Quick reminder : we insure 100% of your Goods :wink: \n' +
-            'The price have been calculated according an average of the :mammoth: +200 missions we did for :busts_in_silhouette:  +70 clients that trust us.\n'
+            'The prices have been calculated according an average of the :mammoth: +200 missions we did for :busts_in_silhouette:  +70 clients that trust us.\n'
             )
         .addField('Estimated value :', numberPresentation(tagV) + ' silvers', true)
         .addField('Weight :', numberPresentation(tagQ) + 'kg', true)

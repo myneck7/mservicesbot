@@ -1,0 +1,7 @@
+{
+  "fhelp": {
+    "action": "bot/fhelp",
+    "permissions": "all",
+    "type": "both"
+  }
+}

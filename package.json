@@ -1,22 +1,24 @@
 {
   "name": "mservicesbot",
-  "version": "1.0.0",
+  "version": "1.2.0",
+  "description": "bot of m services",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myneck7/mservicesbot.git"
+  },
+  "author": "myneck7",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/myneck7/mservicesbot/issues"
+  },
+  "homepage": "https://github.com/myneck7/mservicesbot#readme",
   "dependencies": {
-    "discord.js": "^12.5.3",
-    "dotenv": "^10.0.0",
-    "sequelize": "^6.6.2",
-    "simple-git": "^2.40.0",
+    "discord.js": "^13.0.1",
+    "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
-  },
-  "devDependencies": {
-    "cron": "^1.8.2",
-    "shelljs": "^0.8.4"
-  },
-  "description": ""
+  }
 }

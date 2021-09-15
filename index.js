@@ -1,11 +1,27 @@
-const Discord = require("discord.js");
-const func = require("./JS/func.js");
+const func = require('./func.js');
+const config = require('./config.json');
+
+const {readdirSync} = require("fs");
+
 //const cron = require('cron');
 const Sequelize = require('sequelize');
-const client = new Discord.Client();
-require("dotenv").config();
+const { Client, Intents, Collection } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+client.commands = new Collection();
 
-const PREFIX = '$';
+const loadCommands = (dir = "./commands/") => {
+    readdirSync(dir).forEach(dirs => {
+        const commands = readdirSync(`${dir}/${dirs}/`).filter(files => files.endsWith(".js"));
+
+        for(const file of commands){
+            const getFileName = require(`${dir}/${dirs}/${file}`);
+            client.commands.set(getFileName.help.name, getFileName);
+            console.log(`commande chargée: ${getFileName.help.name}`);
+        };
+    });
+};
+
+loadCommands();
 
 const sequelize = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
@@ -47,7 +63,7 @@ client.on("ready", () => {
     console.log("I'm ready !");
 });
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
 
     if (message.content.startsWith(PREFIX)) {
         const input = message.content.slice(PREFIX.length).trim().split(' ');
@@ -55,6 +71,7 @@ client.on("message", async message => {
         const commandArgs = input.join(' ');
 
         if (command === 'create' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
+
             const splitArgs = commandArgs.split(' ');
             const tagName = splitArgs.shift();
             const tagCollateral = splitArgs.join(' ');
@@ -137,8 +154,8 @@ client.on("message", async message => {
             return message.reply(func.functionError());
         }
         else if (command === 'backup' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
-
-            return message.reply({ files: ["./database.sqlite"] });
+            return client.channels.cache.get(`835183368076394568`).send({ files: ["./database.sqlite"] });
+            //return message.reply({ files: ["./database.sqlite"] });
         }
         else if (command === 'commandsa' && (message.member.roles.cache.has('843115976584200222') || message.member.hasPermission('ADMINISTRATOR'))) {
             return message.reply(
@@ -155,17 +172,14 @@ client.on("message", async message => {
                 '\ngetcollateral [name of the transporter]\n' +
                 'show [name of the transporter]\n' +
                 'showall\n' +
-                'price [weight] [estimated value]'
+                'prices [weight] [estimated value]'
             );
-        }
-        else if(command =='push'){
-            let exec = require('child_process').exec;
-            exec('gitpush.sh');
-
         }
         else{
             return message.reply(func.functionError());
         }
     }
 });
-client.login(process.env.BOT_TOKEN);
+
+
+client.login(config.client.token);
