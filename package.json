@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/myneck7/mservicesbot#readme",
   "dependencies": {
+    "cron": "^1.8.2",
     "discord.js": "^13.0.1",
+    "mongoose": "^6.0.6",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
   }
