@@ -23,6 +23,8 @@ module.exports = async client => {
     };
     client.addPlayerScore = async (player, weight, value) =>{
         let data = await client.getPlayer(player);
+        console.log(weight);
+        console.log(value);
         if(data != null) {
             let nw = Number(weight);
             let nv = Number(value);

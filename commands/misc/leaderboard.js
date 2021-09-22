@@ -1,37 +1,41 @@
 const {MessageEmbed} = require("discord.js");
 const {MESSAGES} = require('../../util/constants');
 
+function numberPresentation(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+}
+
 module.exports.run = async (client, message) => {
     try {
         let act = await client.getAllPlayer();
-        let listPosition = "";
+        let listPseudo = "";
         let listWeight = "";
         let listValue = "";
-        let pos = 1;
         for (let value of Object.entries(act)) {
             value = String(value);
             value = value.split(',');
-            let test = value[1].split(' ');
-            let test2 = value[2].split(' ');
-            listPosition += pos+"\n";
-            listWeight += test[2] + "\n";
-            listValue += test2[2] + "\n";
-            pos += 1;
+            let amountW = value[1].split(':');
+            let amountV = value[2].split(':');
+            let pseudo = value[3].split(':');
+            listPseudo += "__"+pseudo[1].replaceAll("\'","")+"__\n";
+            listWeight += amountW[1] + " kg\n";
+            listValue += amountV[1] + " silvers\n";
         }
         if (listWeight == "") {
             listWeight = "null";
             listValue = "null";
-            listPosition = "null";
+            listPseudo = "null";
         }
+
         return message.channel.send({
             embeds: [
                 new MessageEmbed().setColor('0xff0000')
                     .setTitle(`Leaderboard: `)
                     .setThumbnail(client.user.displayAvatarURL())
                     .setTimestamp()
-                    .addField('**Position**', `${listPosition}`, true)
-                    .addField('**Weight**', `${listWeight}`, true)
-                    .addField('**Value**', `${listValue}`, true)
+                    .addField('**Pseudo**', `${listPseudo}`, true)
+                    .addField('**Value**', `${numberPresentation(listValue)}`, true)
+                    .addField('**Weight**', `${numberPresentation(listWeight)}`, true)
                     .setImage('https://i.imgur.com/0iQM3WP.png')
             ]
         });

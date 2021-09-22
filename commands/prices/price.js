@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
     else{
         res = tagV/100*6;
     }
-    //res = Math.round(res);
+    res = Math.round(res);
     if(Number(res) < 750000){
         res = 750000;
     }
@@ -33,8 +33,8 @@ module.exports.run = async (client, message, args) => {
                     'The infos you entered showed that you qualify for our Services.\n' +
                     'We will accept to carry safely your convoy for **'+ numberPresentation(res) +'** silvers\n' +
                     '\n' +
-                    'Quick reminder : we insure 100% of your Goods :wink: \n' +
-                    'The prices have been calculated according an average of the :mammoth: +200 missions we did for :busts_in_silhouette:  +70 clients that trust us.\n'
+                    'Quick reminder : we insure :100:% of your Goods :wink: \n' +
+                    'The prices have been calculated according an average of the :mammoth: +600 missions we did for :busts_in_silhouette:  +100 clients that trust us.\n'
                 )
                 .addField('Estimated value :', numberPresentation(tagV) + ' silvers', true)
                 .addField('Weight :', numberPresentation(tagQ) + 'kg', true)

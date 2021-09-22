@@ -23,7 +23,7 @@ const MESSAGES = {
             },
             LEADERBOARD:{
                 name:"leaderboard",
-                aliases: ["leaderboard"],
+                aliases: ["leaderboard", "l"],
                 category:'misc',
                 description:"send player list",
                 cooldown: 5,
@@ -65,7 +65,7 @@ const MESSAGES = {
             },
             ADDSCORE:{
                 name:"addscore",
-                aliases: ["addscore"],
+                aliases: ["addscore", "add", "a"],
                 category:'management',
                 description:"add score to a player",
                 cooldown: 5,
@@ -75,7 +75,7 @@ const MESSAGES = {
             },
             DELETEPLAYER:{
                 name:"deleteplayer",
-                aliases: ["deleteplayer"],
+                aliases: ["deleteplayer", "delete", "d"],
                 category:'management',
                 description:`delete a player`,
                 cooldown: 5,
@@ -87,10 +87,10 @@ const MESSAGES = {
         PRICES:{
             PRICE:{
                 name:"price",
-                aliases: ["p"],
+                aliases: ["p", "price"],
                 category:'prices',
                 description:"calculate the cost of the convoy",
-                cooldown: 10,
+                cooldown: 5,
                 usage: '',
                 roles: false,
                 args: true

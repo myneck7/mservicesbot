@@ -1,11 +1,15 @@
 const {MessageEmbed} = require("discord.js");
 const {MESSAGES} = require('../../util/constants');
 
-module.exports.run = async (client, message) => {
+module.exports.run = async (client, message, args) => {
     try {
         const user = message.mentions.users.first();
+        let pseudo = args[1];
+        if(!pseudo){
+            return message.reply("Must enter a pseudo");
+        }
         if (!user) return message.channel.send(`false`);
-        let newPlayer = {userId: user.id};
+        let newPlayer = {userId: user.id, pseudo: pseudo};
         await client.createPlayer(newPlayer);
 
         return message.channel.send({

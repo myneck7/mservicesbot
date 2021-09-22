@@ -12,6 +12,7 @@ const playerSchema = mongoose.Schema({
         "type": Number,
         "default": 0
     },
+    pseudo: String,
     exp:{
         "type": Number,
         "default": 0
