@@ -14,15 +14,15 @@ module.exports.run = async (client, message, args) => {
     const tagV = Number(args[1]);
     let res = 0;
 
-    if(tagQ/2000*750000 >= tagV/100*6){
-        res = tagQ/2000*750000;
+    if(tagQ/2000*700000 >= tagV/100*5){
+        res = tagQ/2000*700000;
     }
     else{
-        res = tagV/100*6;
+        res = tagV/100*5;
     }
     res = Math.round(res);
-    if(Number(res) < 750000){
-        res = 750000;
+    if(Number(res) < 700000){
+        res = 700000;
     }
     return message.channel.send({
         embeds: [
