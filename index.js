@@ -9,6 +9,5 @@ client.config = require("./util/config.json");
 
 loadCommands(client);
 loadEvents(client);
-client.mongoose.init();
 
 client.login(client.config.TOKEN);
