@@ -14,15 +14,15 @@ module.exports.run = async (client, message, args) => {
     const tagV = Number(args[1]);
     let res = 0;
 
-    if(tagQ/2000*750000 >= tagV/100*6){
-        res = tagQ/2000*750000;
+    if(tagQ/2000*800000 >= tagV/100*10){
+        res = tagQ/2000*800000;
     }
     else{
-        res = tagV/100*6;
+        res = tagV/100*10;
     }
     res = Math.round(res);
-    if(Number(res) < 750000){
-        res = 750000;
+    if(Number(res) < 800000){
+        res = 800000;
     }
     return message.channel.send({
         embeds: [
@@ -34,7 +34,7 @@ module.exports.run = async (client, message, args) => {
                     'We will accept to carry safely your convoy for **'+ numberPresentation(res) +'** silvers\n' +
                     '\n' +
                     'Quick reminder : we insure :100:% of your Goods :wink: \n' +
-                    'The prices have been calculated according an average of the :mammoth: +800 missions we did for :busts_in_silhouette:  +100 clients that trust us.\n'
+                    'The prices have been calculated according an average of the :mammoth: +1000 missions we did for :busts_in_silhouette:  +100 clients that trust us.\n'
                 )
                 .addField('Estimated value :', numberPresentation(tagV) + ' silvers', true)
                 .addField('Weight :', numberPresentation(tagQ) + 'kg', true)
