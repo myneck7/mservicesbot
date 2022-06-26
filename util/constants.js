@@ -11,9 +11,19 @@ const MESSAGES = {
                 roles: false,
                 args: true
             },
-            PRICECLIENT:{
-                name:"priceclient",
-                aliases: ["pc", "priceclient"],
+            PRICECUSTOMER:{
+                name:"pricecustomer",
+                aliases: ["pc", "pricecustomer"],
+                category:'prices',
+                description:"calculate the cost of the convoy",
+                cooldown: 5,
+                usage: '',
+                roles: false,
+                args: true
+            },
+			PRICEVIP:{
+                name:"pricevip",
+                aliases: ["pv", "pricevip"],
                 category:'prices',
                 description:"calculate the cost of the convoy",
                 cooldown: 5,
